@@ -1,6 +1,6 @@
-import express from "express";
-import requestPromise from "request-promise";
-import cheerio from "cheerio";
+const express = require("express");
+const requestPromise = require("request-promise");
+const cheerio = require("cheerio");
 
 const port = process.env.NODE_ENV === "development" ? 4000 : 80;
 const app = express();
@@ -25,7 +25,7 @@ app.use(express.json());
  * @param {string[]} usernames
  */
 app.post("/", async (req, res) => {
-  const arr = [];
+  let arr = [];
   const usernames = req.body.usernames;
   for (const username of usernames) {
     try {
@@ -33,10 +33,10 @@ app.post("/", async (req, res) => {
       const html = await requestPromise(url);
       const $ = cheerio.load(html);
       $(".post-preview.portable-archive-post").each((i, post) => {
-        const thumbnail = $(post)
+        const thumbnailCSS = $(post)
           .find(".post-preview-image")
-          .css("background-image")
-          .split('"')[1];
+          .css("background-image");
+        const thumbnail = thumbnailCSS ? thumbnailCSS.split('"')[1] : "";
         const title = $(post).find(".post-preview-title").text();
         const description = $(post).find(".post-preview-description").text();
         const author = $(post).find(".post-meta-item.author a").text();
