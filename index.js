@@ -2,7 +2,7 @@ const express = require("express");
 const requestPromise = require("request-promise");
 const cheerio = require("cheerio");
 
-const port = process.env.NODE_ENV === "development" ? 4000 : 80;
+const port = process.env.PORT || 4000;
 const app = express();
 
 app.use(express.json());
