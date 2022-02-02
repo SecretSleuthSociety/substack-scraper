@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const requestPromise = require("request-promise");
 const cheerio = require("cheerio");
 
@@ -6,6 +7,11 @@ const port = process.env.PORT || 4000;
 const app = express();
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 /**
  * 1. Load all substack blog index pages.
